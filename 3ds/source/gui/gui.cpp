@@ -608,7 +608,7 @@ namespace
 
 //         fontsLoaded = true;
 //     }
-// }
+}
 
 void Gui::drawImageAt(const C2D_Image& img, float x, float y, const C2D_ImageTint* tint,
     float scaleX, float scaleY, float rotation)
