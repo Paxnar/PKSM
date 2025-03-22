@@ -688,13 +688,7 @@ Result App::init(const std::string& execPath)
 
     moveIcon.test_and_set();
     Threads::create(iconThread);
-
-    if (R_FAILED(res = svcConnectToPort(&hbldrHandle, "hb:ldr")))
-    {
-        return consoleDisplayError(
-            "Rosalina sysmodule has not been found.\n\nMake sure you're running latest Luma3DS.",
-            res);
-    }
+    
     Logging::startupLog("rosalina", "ok");
 
     APT_GetAppCpuTimeLimit(&old_time_limit);
