@@ -1051,10 +1051,10 @@ Result Gui::init(void)
     
     Logging::startupLog("gui", "hiset");
 
-    fontLoaderThread = std::thread(loadRemainingFonts);
+    // fontLoaderThread = std::thread(loadRemainingFonts);
     
     Logging::startupLog("gui", "fontload");
-    fontLoaderThread.detach(); // Let it run in background
+    // fontLoaderThread.detach(); // Let it run in background
     
     Logging::startupLog("gui", "detach");
     return 0;
