@@ -19,7 +19,7 @@ jobs:
         working-directory: "/PKSM"
         run: |
           make
-          zip -r PKSM.zip 3ds/out/PKSM.cia 3ds/out/PKSM.3dsx 3ds/out/PKSM.elf
+          zip -r PKSM.zip 3ds/out/PKSM.cia 3ds/out/PKSM.3dsx
       - uses: actions/upload-artifact@v4
         with:
           name: PKSM-Build
