@@ -583,32 +583,32 @@ namespace
         }
     }
 
-    void loadRemainingFonts()
-    {
-        // Don't load the already loaded region
-        CFG_Region currentRegion = getRegionFromLanguage();
+//     void loadRemainingFonts()
+//     {
+//         // Don't load the already loaded region
+//         CFG_Region currentRegion = getRegionFromLanguage();
 
-        std::vector<CFG_Region> regionsToLoad = {
-            CFG_REGION_USA, CFG_REGION_TWN, CFG_REGION_CHN, CFG_REGION_KOR};
+//         std::vector<CFG_Region> regionsToLoad = {
+//             CFG_REGION_USA, CFG_REGION_TWN, CFG_REGION_CHN, CFG_REGION_KOR};
 
-        for (auto region : regionsToLoad)
-        {
-            if (region != currentRegion)
-            {
-                C2D_Font font = C2D_FontLoadSystem(region);
-                if (font)
-                {
-                    std::lock_guard<std::mutex> lock(fontMutex);
-                    fonts.emplace_back(font);
-                    textBuffer->addFont(font);
-                    Logging::info("Loaded font for region {}", region);
-                }
-            }
-        }
+//         for (auto region : regionsToLoad)
+//         {
+//             if (region != currentRegion)
+//             {
+//                 C2D_Font font = C2D_FontLoadSystem(region);
+//                 if (font)
+//                 {
+//                     std::lock_guard<std::mutex> lock(fontMutex);
+//                     fonts.emplace_back(font);
+//                     textBuffer->addFont(font);
+//                     Logging::info("Loaded font for region {}", region);
+//                 }
+//             }
+//         }
 
-        fontsLoaded = true;
-    }
-}
+//         fontsLoaded = true;
+//     }
+// }
 
 void Gui::drawImageAt(const C2D_Image& img, float x, float y, const C2D_ImageTint* tint,
     float scaleX, float scaleY, float rotation)
