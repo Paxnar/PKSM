@@ -225,7 +225,6 @@ namespace TextParse
             Logging::startupLog("gui", "font sheets size: {}", fontSheets.size());
             for (size_t i = 0; i < fontSheets.size(); i++)
             {
-                Logging::startupLog("gui", "inAnother for");
                 fontSheets[i].data   = glyphInfo->sheetData + glyphInfo->sheetSize * i;
                 fontSheets[i].fmt    = (GPU_TEXCOLOR)glyphInfo->sheetFmt;
                 fontSheets[i].size   = glyphInfo->sheetSize;
