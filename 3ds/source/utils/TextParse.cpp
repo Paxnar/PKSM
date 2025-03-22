@@ -222,28 +222,21 @@ namespace TextParse
             Logging::startupLog("gui", "glyph info");
             std::vector<C3D_Tex> fontSheets(glyphInfo->nSheets);
             Logging::startupLog("gui", "font sheets");
+            Logging::startupLog("gui", "font sheets size: {}", fontSheets.size());
             for (size_t i = 0; i < fontSheets.size(); i++)
             {
                 Logging::startupLog("gui", "inAnother for");
                 fontSheets[i].data   = glyphInfo->sheetData + glyphInfo->sheetSize * i;
-                Logging::startupLog("gui", "data");
                 fontSheets[i].fmt    = (GPU_TEXCOLOR)glyphInfo->sheetFmt;
-                Logging::startupLog("gui", "fmt");
                 fontSheets[i].size   = glyphInfo->sheetSize;
-                Logging::startupLog("gui", "size");
                 fontSheets[i].width  = glyphInfo->sheetWidth;
-                Logging::startupLog("gui", "width");
                 fontSheets[i].height = glyphInfo->sheetHeight;
-                Logging::startupLog("gui", "height");
                 fontSheets[i].param  = GPU_TEXTURE_MAG_FILTER(GPU_LINEAR) |
                                       GPU_TEXTURE_MIN_FILTER(GPU_LINEAR) |
                                       GPU_TEXTURE_WRAP_S(GPU_CLAMP_TO_BORDER) |
                                       GPU_TEXTURE_WRAP_T(GPU_CLAMP_TO_BORDER);
-                Logging::startupLog("gui", "param");
                 fontSheets[i].border   = 0;
-                Logging::startupLog("gui", "border");
                 fontSheets[i].lodParam = 0;
-                Logging::startupLog("gui", "lod");
             }
             glyphSheets.emplace(font, std::move(fontSheets));
             Logging::startupLog("gui", "emplace");
