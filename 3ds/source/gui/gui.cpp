@@ -1040,13 +1040,23 @@ Result Gui::init(void)
     Logging::startupLog("gui", "loaded main font for region {}", region);
 
     textBuffer = new TextParse::TextBuf(8192, fonts);
+    
+    Logging::startupLog("gui", "textbuffer");
 
     bgBoxes = C2D_SpriteSheetGetImage(spritesheet_ui, ui_sheet_anim_squares_idx);
+    
+    Logging::startupLog("gui", "bgboxes");
 
     hidSetRepeatParameters(10, 10);
+    
+    Logging::startupLog("gui", "hiset");
 
     fontLoaderThread = std::thread(loadRemainingFonts);
+    
+    Logging::startupLog("gui", "fontload");
     fontLoaderThread.detach(); // Let it run in background
+    
+    Logging::startupLog("gui", "detach");
     return 0;
 }
 
