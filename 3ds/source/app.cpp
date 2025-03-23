@@ -168,23 +168,6 @@ namespace
         return res;
     }
 
-    Result HBLDR_SetTarget(const char* path)
-    {
-        u32 pathLen = strlen(path) + 1;
-        u32* cmdbuf = getThreadCommandBuffer();
-
-        cmdbuf[0] = IPC_MakeHeader(2, 0, 2); // 0x20002
-        cmdbuf[1] = IPC_Desc_StaticBuffer(pathLen, 0);
-        cmdbuf[2] = (u32)path;
-
-        Result rc = svcSendSyncRequest(hbldrHandle);
-        if (R_SUCCEEDED(rc))
-        {
-            rc = cmdbuf[1];
-        }
-        return rc;
-    }
-
     void backupExtData()
     {
         Archive::copyDir(Archive::data(), u"/", Archive::sd(), u"/3ds/PKSM/extDataBackup");
