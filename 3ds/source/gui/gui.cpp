@@ -1058,8 +1058,17 @@ Result Gui::init(void)
     hidSetRepeatParameters(10, 10);
     
     Logging::startupLog("gui", "hiset");
-
-    fontLoaderThread = std::thread(loadRemainingFonts);
+    try
+        {
+            Logging::startupLog("gui", "trying1");
+            fontLoaderThread = std::thread(loadRemainingFonts);
+            Logging::startupLog("gui", "trying2");
+        }
+    catch (const char* error_message)
+        {
+            Logging::startupLog("gui", "brah");
+            Logging::startupLog("gui", "error: {}", error_message);
+        }
     
     Logging::startupLog("gui", "fontload");
     fontLoaderThread.detach(); // Let it run in background
