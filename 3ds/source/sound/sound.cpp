@@ -236,12 +236,12 @@ Result Sound::init()
     LightEvent_Init(&frameEvent, RESET_ONESHOT);
     Logging::startupLog("sound", "frameEvent init ok");
 
-    Result res = ndspInit();
-    ndspSetCallback(ndspFrameCallback, nullptr);
-    if (R_FAILED(res))
-    {
-        return res;
-    }
+    // Result res = ndspInit();
+    // ndspSetCallback(ndspFrameCallback, nullptr);
+    // if (R_FAILED(res))
+    // {
+    //     return res;
+    // }
     Logging::startupLog("sound", "ndsp init ok");
 
     bufferMem = (s16*)linearAlloc(BUFFER_SIZE * BUFFERS_PER_CHANNEL * NUM_CHANNELS);
