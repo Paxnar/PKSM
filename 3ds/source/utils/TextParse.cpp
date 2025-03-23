@@ -214,14 +214,10 @@ namespace TextParse
     TextBuf::TextBuf(size_t maxGlyphs, const std::vector<C2D_Font>& fonts)
         : fonts(fonts), maxGlyphs(maxGlyphs), currentGlyphs(0)
     {
-        Logging::startupLog("gui", "before for");
         for (const auto& font : this->fonts)
         {
-            Logging::startupLog("gui", "in for");
             TGLP_s* glyphInfo = C2D_FontGetInfo(font)->tglp;
-            Logging::startupLog("gui", "glyph info");
             std::vector<C3D_Tex> fontSheets(glyphInfo->nSheets);
-            Logging::startupLog("gui", "font sheets");
             Logging::startupLog("gui", "font sheets size: {}", fontSheets.size());
             for (size_t i = 0; i < fontSheets.size(); i++)
             {
