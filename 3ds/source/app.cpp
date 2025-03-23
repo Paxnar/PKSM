@@ -137,6 +137,12 @@ namespace
             }
             if (downloadAsset)
             {
+                u32 status;
+                ACU_GetWifiStatus(&status);
+                if (status == 0)
+                {
+                    return -1;
+                }
                 Result res1 = Fetch::download(item.url, item.path);
                 if (R_FAILED(res1))
                 {
@@ -166,6 +172,23 @@ namespace
             hidScanInput();
         }
         return res;
+    }
+
+    Result HBLDR_SetTarget(const char* path)
+    {
+        u32 pathLen = strlen(path) + 1;
+        u32* cmdbuf = getThreadCommandBuffer();
+
+        cmdbuf[0] = IPC_MakeHeader(2, 0, 2); // 0x20002
+        cmdbuf[1] = IPC_Desc_StaticBuffer(pathLen, 0);
+        cmdbuf[2] = (u32)path;
+
+        Result rc = svcSendSyncRequest(hbldrHandle);
+        if (R_SUCCEEDED(rc))
+        {
+            rc = cmdbuf[1];
+        }
+        return rc;
     }
 
     void backupExtData()
@@ -637,6 +660,8 @@ namespace
         }
         else
         {
+            std::string path = execPath.substr(execPath.find('/'));
+            res              = HBLDR_SetTarget(path.c_str());
         }
         if (R_FAILED(res))
         {
