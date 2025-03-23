@@ -137,12 +137,6 @@ namespace
             }
             if (downloadAsset)
             {
-                u32 status;
-                ACU_GetWifiStatus(&status);
-                if (status == 0)
-                {
-                    return -1;
-                }
                 Result res1 = Fetch::download(item.url, item.path);
                 if (R_FAILED(res1))
                 {
@@ -423,45 +417,6 @@ namespace
 
     void cartScan()
     {
-        bool oldCardIn;
-        FSUSER_CardSlotIsInserted(&oldCardIn);
-
-        while (doCartScan.test_and_set())
-        {
-            bool cardIn = false;
-
-            FSUSER_CardSlotIsInserted(&cardIn);
-            if (cardIn != oldCardIn)
-            {
-                bool power;
-                FSUSER_CardSlotGetCardIFPowerStatus(&power);
-                if (cardIn)
-                {
-                    if (!power)
-                    {
-                        FSUSER_CardSlotPowerOn(&power);
-                    }
-                    while (!power && doCartScan.test_and_set())
-                    {
-                        FSUSER_CardSlotGetCardIFPowerStatus(&power);
-                    }
-                    svcSleepThread(500'000'000);
-                    for (size_t i = 0; i < 10; i++)
-                    {
-                        if ((oldCardIn = TitleLoader::scanCard()))
-                        {
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    FSUSER_CardSlotPowerOff(&power);
-                    TitleLoader::scanCard();
-                    oldCardIn = false;
-                }
-            }
-        }
     }
 
     void iconThread()
@@ -660,8 +615,6 @@ namespace
         }
         else
         {
-            std::string path = execPath.substr(execPath.find('/'));
-            res              = HBLDR_SetTarget(path.c_str());
         }
         if (R_FAILED(res))
         {
