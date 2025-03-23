@@ -400,6 +400,45 @@ namespace
 
     void cartScan()
     {
+        bool oldCardIn;
+        FSUSER_CardSlotIsInserted(&oldCardIn);
+
+        while (doCartScan.test_and_set())
+        {
+            bool cardIn = false;
+
+            FSUSER_CardSlotIsInserted(&cardIn);
+            if (cardIn != oldCardIn)
+            {
+                bool power;
+                FSUSER_CardSlotGetCardIFPowerStatus(&power);
+                if (cardIn)
+                {
+                    if (!power)
+                    {
+                        FSUSER_CardSlotPowerOn(&power);
+                    }
+                    while (!power && doCartScan.test_and_set())
+                    {
+                        FSUSER_CardSlotGetCardIFPowerStatus(&power);
+                    }
+                    svcSleepThread(500'000'000);
+                    for (size_t i = 0; i < 10; i++)
+                    {
+                        if ((oldCardIn = TitleLoader::scanCard()))
+                        {
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    FSUSER_CardSlotPowerOff(&power);
+                    TitleLoader::scanCard();
+                    oldCardIn = false;
+                }
+            }
+        }
     }
 
     void iconThread()
