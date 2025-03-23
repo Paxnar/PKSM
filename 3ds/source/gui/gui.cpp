@@ -583,31 +583,41 @@ namespace
         }
     }
 
-//     void loadRemainingFonts()
-//     {
-//         // Don't load the already loaded region
-//         CFG_Region currentRegion = getRegionFromLanguage();
+    void loadRemainingFonts()
+    {
+        // Don't load the already loaded region
+        Logging::startupLog("gui", "loadRemainingBegin");
+        CFG_Region currentRegion = getRegionFromLanguage();
+        Logging::startupLog("gui", "currentregion");
 
-//         std::vector<CFG_Region> regionsToLoad = {
-//             CFG_REGION_USA, CFG_REGION_TWN, CFG_REGION_CHN, CFG_REGION_KOR};
+        std::vector<CFG_Region> regionsToLoad = {
+            CFG_REGION_USA, CFG_REGION_TWN, CFG_REGION_CHN, CFG_REGION_KOR};
+        Logging::startupLog("gui", "regionstoload");
 
-//         for (auto region : regionsToLoad)
-//         {
-//             if (region != currentRegion)
-//             {
-//                 C2D_Font font = C2D_FontLoadSystem(region);
-//                 if (font)
-//                 {
-//                     std::lock_guard<std::mutex> lock(fontMutex);
-//                     fonts.emplace_back(font);
-//                     textBuffer->addFont(font);
-//                     Logging::info("Loaded font for region {}", region);
-//                 }
-//             }
-//         }
+        for (auto region : regionsToLoad)
+        {
+            Logging::startupLog("gui", "forregionstoload start");
+            if (region != currentRegion)
+            {
+                Logging::startupLog("gui", "check");
+                C2D_Font font = C2D_FontLoadSystem(region);
+                Logging::startupLog("gui", "font");
+                if (font)
+                {
+                    Logging::startupLog("gui", "font check");
+                    std::lock_guard<std::mutex> lock(fontMutex);
+                    Logging::startupLog("gui", "lock");
+                    fonts.emplace_back(font);
+                    Logging::startupLog("gui", "emplace");
+                    textBuffer->addFont(font);
+                    Logging::info("Loaded font for region {}", region);
+                }
+            }
+        }
 
-//         fontsLoaded = true;
-//     }
+        fontsLoaded = true;
+        Logging::startupLog("gui", "loaded");
+    }
 }
 
 void Gui::drawImageAt(const C2D_Image& img, float x, float y, const C2D_ImageTint* tint,
@@ -1044,17 +1054,15 @@ Result Gui::init(void)
     Logging::startupLog("gui", "textbuffer");
 
     bgBoxes = C2D_SpriteSheetGetImage(spritesheet_ui, ui_sheet_anim_squares_idx);
-    
-    Logging::startupLog("gui", "bgboxes");
 
     hidSetRepeatParameters(10, 10);
     
     Logging::startupLog("gui", "hiset");
 
-    // fontLoaderThread = std::thread(loadRemainingFonts);
+    fontLoaderThread = std::thread(loadRemainingFonts);
     
     Logging::startupLog("gui", "fontload");
-    // fontLoaderThread.detach(); // Let it run in background
+    fontLoaderThread.detach(); // Let it run in background
     
     Logging::startupLog("gui", "detach");
     return 0;
