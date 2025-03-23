@@ -57,16 +57,16 @@ namespace
     std::atomic<bool> finished = true;
     u8 currentVolume           = 0;
 
-    void ndspFrameCallback(void*)
-    {
-        if (!playing)
-        {
-            return;
-        }
+    // void ndspFrameCallback(void*)
+    // {
+    //     if (!playing)
+    //     {
+    //         return;
+    //     }
 
-        // FIXME: there's a nasty deadlock somewhere in here
-        LightEvent_Signal(&frameEvent);
-    }
+    //     // FIXME: there's a nasty deadlock somewhere in here
+    //     LightEvent_Signal(&frameEvent);
+    // }
 
     void fillBuffers(int channel, std::unique_ptr<Decoder>& decoder)
     {
